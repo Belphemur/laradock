@@ -3,12 +3,17 @@ FROM php:7.0-fpm
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
 ADD ./laravel.ini /usr/local/etc/php/conf.d
+ADD ./xdebug.ini /usr/local/etc/php/conf.d
 ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libmemcached-dev \
     curl
+
+
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug
 
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install \
