@@ -14,14 +14,15 @@ services:
             - "9000"
         links:
             - workspace
+            - mailcatcher
 
 ### Laravel Application Code Container ######################
 
     application:
         build: ./application
         volumes:
-#            - /home/aaflalo/dev/quickstart/:/var/www/laravel
-            - /home/aaflalo/dev/projects/:/var/www/laravel
+            - /home/aaflalo/dev/quickstart/:/var/www/laravel
+#            - /home/aaflalo/dev/projects/:/var/www/laravel
 
 ### Databases Data Container ################################
 
@@ -150,3 +151,13 @@ services:
         tty: true
 
 ### Add more Containers below ###############################
+
+    mailcatcher:
+        image: belphemur/mailcatcher-exim-courrier
+        environment:
+            - MAILCATCHER_USERNAME=admin
+            - MAILCATCHER_PASSWORD=abc123
+        expose: 
+            - "25"
+        ports:
+            - "9080:80"
