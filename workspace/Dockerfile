@@ -56,12 +56,12 @@ RUN npm install -g \
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # Add an alias for PHPUnit
-RUN echo "alias phpunit='./vendor/bin/phpunit'" >> ~/.bashrc
+RUN echo "alias phpunit='./vendor/bin/phpunit'" >> /etc/profile
 
 # Install Composer
 RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/ \
-    && echo "alias composer='/usr/local/bin/composer.phar'" >> ~/.bashrc
+    && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
 # Source the bash
 RUN . ~/.bashrc

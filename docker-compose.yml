@@ -20,7 +20,8 @@ services:
     application:
         build: ./application
         volumes:
-            - /home/aaflalo/dev/cumulus-prov/:/var/www/laravel
+#            - /home/aaflalo/dev/quickstart/:/var/www/laravel
+            - /home/aaflalo/dev/projects/:/var/www/laravel
 
 ### Databases Data Container ################################
 
