@@ -30,7 +30,7 @@ services:
         build: ./data
         volumes:
             - /var/lib/mysql
-            - /var/lib/postgres
+            - /var/lib/postgresql
             - /var/lib/mariadb
             - /var/lib/redis
             - /var/lib/memcached
@@ -67,7 +67,7 @@ services:
 ### PostgreSQL Container ####################################
 
     postgres:
-        build: ./postgres
+        image: postgres:latest
         volumes_from:
             - data
         ports:
