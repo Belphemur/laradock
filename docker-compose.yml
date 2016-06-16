@@ -149,6 +149,7 @@ services:
         volumes_from:
             - application
         tty: true
+        user: laravel
 
 ### Add more Containers below ###############################
 

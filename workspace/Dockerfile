@@ -1,4 +1,5 @@
 FROM  ubuntu:latest
+ENV USER_ID 1000
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
@@ -58,7 +59,7 @@ RUN npm install -g \
 RUN echo "alias phpunit='/var/www/laravel/vendor/bin/phpunit'" >> /etc/profile
 
 #Add alias laravel
-RUN echo "alias laravel='php /var/www/laravel/artisan" >> /etc/profile
+RUN echo "alias laravel='php /var/www/laravel/artisan'" >> /etc/profile
 
 # Install Composer
 RUN curl -s http://getcomposer.org/installer | php \
@@ -67,5 +68,6 @@ RUN curl -s http://getcomposer.org/installer | php \
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN mkdir -p /var/www/ && useradd -ms /bin/bash laravel -u $USER_ID -d /var/www/laravel
 
 WORKDIR /var/www/laravel
