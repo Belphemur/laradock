@@ -1,4 +1,4 @@
-FROM phusion/baseimage:latest
+FROM  ubuntu:latest
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
@@ -13,11 +13,13 @@ ENV TERM xterm
 
 # Install "software-properties-common" (for the "add-apt-repository")
 RUN apt-get update && apt-get install -y \
-    software-properties-common
+    software-properties-common sudo curl
 
 # Add the "PHP 7" ppa
 RUN add-apt-repository -y \
     ppa:ondrej/php
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
 # Install PHP-CLI 7, some PHP extentions and some useful Tools with APT
 RUN apt-get update && apt-get install -y \
@@ -42,9 +44,7 @@ RUN apt-get update && apt-get install -y \
         vim \
         nano \
         nodejs \
-        nodejs-dev \
-        gettext \
-        npm 
+        gettext
 
 # Clean up, to free some space
 RUN apt-get clean
@@ -54,11 +54,11 @@ RUN npm install -g \
     gulp \
     bower
 
-# Add a symbolic link for Node
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-
 # Add an alias for PHPUnit
-RUN echo "alias phpunit='./vendor/bin/phpunit'" >> /etc/profile
+RUN echo "alias phpunit='/var/www/laravel/vendor/bin/phpunit'" >> /etc/profile
+
+#Add alias laravel
+RUN echo "alias laravel='php /var/www/laravel/artisan" >> /etc/profile
 
 # Install Composer
 RUN curl -s http://getcomposer.org/installer | php \
