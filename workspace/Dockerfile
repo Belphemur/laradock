@@ -1,5 +1,6 @@
 FROM  ubuntu:latest
 ENV USER_ID 1000
+ENV USER_NAME laravel
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
@@ -45,7 +46,8 @@ RUN apt-get update && apt-get install -y \
         vim \
         nano \
         nodejs \
-        gettext
+        gettext \
+	zsh
 
 # Clean up, to free some space
 RUN apt-get clean
@@ -68,6 +70,10 @@ RUN curl -s http://getcomposer.org/installer | php \
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir -p /var/www/ && useradd -ms /bin/bash laravel -u $USER_ID -d /var/www/laravel
+RUN mkdir -p /var/www/ && useradd -ms /bin/zsh $USER_NAME -u $USER_ID && \
+	git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER_NAME/.oh-my-zsh && \
+	chown -R $USER_NAME: -R /home/$USER_NAME
+
+ADD zshrc /home/laravel/.zshrc
 
 WORKDIR /var/www/laravel
