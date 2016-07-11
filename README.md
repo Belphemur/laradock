@@ -814,3 +814,15 @@ Email: `mahmoud@zalt.me`
 ## License
 
 [MIT License](https://github.com/laradock/laradock/blob/master/LICENSE) (MIT)
+
+## Commands alias
+
+```bash
+alias docker-workspace="docker ps -q --filter='name=workspace'"
+
+docker-run() {
+    docker exec -it -u $(id -u $USER ) $(docker-workspace) "$@"
+}
+
+alias docker-zsh="docker-run zsh"
+```
