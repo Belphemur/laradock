@@ -162,3 +162,11 @@ services:
             - "25"
         ports:
             - "9080:80"
+
+    redis-commander:
+          image: tenstartups/redis-commander
+          command: --redis-host redis
+          links:
+            - redis:redis
+          ports:
+            - "8081:8081"
