@@ -95,7 +95,7 @@ services:
 ### Redis Container #########################################
 
     redis:
-        build: ./redis
+        image: redis:alpine
         volumes_from:
             - volumes_data
         ports:
@@ -161,7 +161,7 @@ services:
             - /data/postgresql:/var/lib/pgdata
             - /data/mariadb:/var/lib/mariadb
             - /data/memcached:/var/lib/memcached
-            - /data/redis:/var/lib/redis
+            - /data/redis:/data
             - /data/neo4j/:/var/lib/neo4j
             - /data/mongo:/var/lib/mongo
             
