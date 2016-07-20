@@ -81,8 +81,8 @@ fi
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ARG $USER_NAME=laravel
-ARG $USER_ID=1000
+ARG USER_NAME=laravel
+ARG USER_ID=1000
 
 RUN mkdir -p /var/www/$USER_NAME && useradd -ms /bin/zsh $USER_NAME -u $USER_ID && \
 	git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER_NAME/.oh-my-zsh && \
