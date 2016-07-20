@@ -55,6 +55,7 @@ services:
             POSTGRES_DB: homestead
             POSTGRES_USER: homestead
             POSTGRES_PASSWORD: secret
+            PGDATA: /var/lib/pgdata
 
 ### MariaDB Container #######################################
 
@@ -139,6 +140,8 @@ services:
                 - INSTALL_PRESTISSIMO=false
         volumes_from:
             - volumes_source
+        environment:
+            USER_ID: 1000
         tty: true
         user: laravel
 
@@ -154,13 +157,13 @@ services:
     volumes_data:
         build: ./volumes/data
         volumes:
-            - /var/lib/mysql:/data/mysql
-            - /var/lib/postgresql:/data/postgresql
-            - /var/lib/mariadb:/data/mariadb
-            - /var/lib/memcached:/data/memcached
-            - /var/lib/redis:/data/redis
-            - /var/lib/neo4j:/data/neo4j
-            - /var/lib/mongo:/data/db
+            - /data/mysql:/var/lib/mysql
+            - /data/postgresql:/var/lib/pgdata
+            - /data/mariadb:/var/lib/mariadb
+            - /data/memcached:/var/lib/memcached
+            - /data/redis:/var/lib/redis
+            - /data/neo4j/:/var/lib/neo4j
+            - /data/mongo:/var/lib/mongo
             
 ### Caddy Server Container ##################################
 # Edit the Caddyfile if needed (./caddy/Caddyfile)

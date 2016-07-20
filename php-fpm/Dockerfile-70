@@ -30,7 +30,7 @@ RUN docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2
 
-
+# Install xdebug
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
@@ -55,11 +55,7 @@ RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-m
     && rm /tmp/memcached.tar.gz \
     && docker-php-ext-enable memcached
 
-# Install xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
-RUN apt-get install gettext -y && docker-php-ext-install -j$(nproc) gettext
+RUN apt-get update && apt-get install gettext -y && docker-php-ext-install -j$(nproc) gettext
 
 RUN usermod -u 1000 www-data
 

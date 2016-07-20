@@ -1,4 +1,7 @@
-FROM phusion/baseimage:latest
+FROM  ubuntu:latest
+
+ENV USER_ID 1000
+ENV USER_NAME laravel
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
@@ -51,8 +54,7 @@ RUN apt-get update && apt-get install -y --force-yes \
         curl \
         vim \
         nodejs \
-        nodejs-dev \
-        npm
+        zsh 
 
 # Clean up, to free some space
 RUN apt-get clean
