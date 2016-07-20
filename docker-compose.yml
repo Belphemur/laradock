@@ -2,45 +2,12 @@ version: '2'
 
 services:
 
-### PHP-FPM Container #######################################
-
-    php-fpm:
-        build:
-            context: ./php-fpm
-            dockerfile: Dockerfile-70
-        volumes_from:
-            - application
-        expose:
-            - "9000"
-        links:
-            - workspace
-            - mailcatcher
-
-### Laravel Application Code Container ######################
-
-    application:
-        build: ./application
-        volumes:
-            - /home/cumulus/:/var/www/laravel
-
-### Databases Data Container ################################
-
-    data:
-        build: ./data
-        volumes:
-            - /var/lib/mysql
-            - /var/lib/postgresql
-            - /var/lib/mariadb
-            - /var/lib/redis
-            - /var/lib/memcached
-            - /var/lib/neo4j/data
-
 ### Nginx Server Container ##################################
 
     nginx:
         build: ./nginx
         volumes_from:
-            - application
+            - volumes_source
         volumes:
             - ./logs/nginx/:/var/log/nginx
         ports:
@@ -49,12 +16,25 @@ services:
         links:
             - php-fpm
 
+### PHP-FPM Container #######################################
+
+    php-fpm:
+        build:
+            context: ./php-fpm
+            dockerfile: Dockerfile-70
+        volumes_from:
+            - volumes_source
+        expose:
+            - "9000"
+        links:
+            - workspace
+
 ### MySQL Container #########################################
 
     mysql:
         build: ./mysql
         volumes_from:
-            - data
+            - volumes_data
         ports:
             - "3306:3306"
         environment:
@@ -68,7 +48,7 @@ services:
     postgres:
         image: postgres:latest
         volumes_from:
-            - data
+            - volumes_data
         ports:
             - "5432:5432"
         environment:
@@ -78,10 +58,10 @@ services:
 
 ### MariaDB Container #######################################
 
-    mariadb:  
+    mariadb:
         build: ./mariadb
         volumes_from:
-            - data
+            - volumes_data
         ports:
             - "3306:3306"
         environment:
@@ -100,14 +80,23 @@ services:
         environment:
             - NEO4J_AUTH=homestead:secret
         volumes_from:
-            - data
+            - volumes_data
+
+### MongoDB Container #######################################
+
+    mongo:
+        build: ./mongo
+        ports:
+            - "27017:27017"
+        volumes_from:
+            - volumes_data
 
 ### Redis Container #########################################
 
     redis:
         build: ./redis
         volumes_from:
-            - data
+            - volumes_data
         ports:
             - "6379:6379"
 
@@ -116,7 +105,7 @@ services:
     memcached:
         build: ./memcached
         volumes_from:
-            - data
+            - volumes_data
         ports:
             - "11211:11211"
         links:
@@ -144,14 +133,52 @@ services:
 ### Workspace Utilities Container ###########################
 
     workspace:
-        build: ./workspace
+        build:
+            context: ./workspace
+            args:
+                - INSTALL_PRESTISSIMO=false
         volumes_from:
-            - application
+            - volumes_source
         tty: true
         user: laravel
 
-### Add more Containers below ###############################
+### Laravel Application Code Container ######################
 
+    volumes_source:
+        build: ./volumes/application
+        volumes:
+            - /home/cumulus/:/var/www/laravel
+
+### Databases Data Container ################################
+
+    volumes_data:
+        build: ./volumes/data
+        volumes:
+            - /var/lib/mysql:/data/mysql
+            - /var/lib/postgresql:/data/postgresql
+            - /var/lib/mariadb:/data/mariadb
+            - /var/lib/memcached:/data/memcached
+            - /var/lib/redis:/data/redis
+            - /var/lib/neo4j:/data/neo4j
+            - /var/lib/mongo:/data/db
+            
+### Caddy Server Container ##################################
+# Edit the Caddyfile if needed (./caddy/Caddyfile)
+
+    caddy:
+        build: ./caddy
+        volumes_from:
+            - volumes_source
+        ports:
+            - "80:80"
+            - "443:443"
+            - "2015:2015"
+        volumes:
+            - ./caddy/Caddyfile:/etc/Caddyfile
+        links:
+            - php-fpm
+
+### Add more Containers below ###############################
     mailcatcher:
         image: belphemur/mailcatcher-exim-courrier
         environment:

@@ -1,6 +1,4 @@
-FROM  ubuntu:latest
-ENV USER_ID 1000
-ENV USER_NAME laravel
+FROM phusion/baseimage:latest
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
@@ -24,7 +22,7 @@ RUN add-apt-repository -y \
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
 # Install PHP-CLI 7, some PHP extentions and some useful Tools with APT
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --force-yes \
         php7.0-cli \
         php7.0-common \
         php7.0-curl \
@@ -38,16 +36,23 @@ RUN apt-get update && apt-get install -y \
         php7.0-sqlite3 \
         php7.0-zip \
         php7.0-memcached \
+        php7.0-gd \
+        php7.0-xdebug \
+        php-dev \
+        libcurl4-openssl-dev \
+        libedit-dev \
+        libssl-dev \
+        libxml2-dev \
+        xz-utils \
         php7.0-gettext \
         sqlite3 \
         libsqlite3-dev \
         git \
         curl \
         vim \
-        nano \
         nodejs \
-        gettext \
-	zsh
+        nodejs-dev \
+        npm
 
 # Clean up, to free some space
 RUN apt-get clean
@@ -77,3 +82,9 @@ RUN mkdir -p /var/www/ && useradd -ms /bin/zsh $USER_NAME -u $USER_ID && \
 ADD zshrc /home/laravel/.zshrc
 
 WORKDIR /var/www/laravel
+
+# Install optional software
+ARG INSTALL_PRESTISSIMO=false
+RUN if [ "$INSTALL_PRESTISSIMO" = true ] ; then \
+        composer global require "hirak/prestissimo:^0.3"; \
+    fi
