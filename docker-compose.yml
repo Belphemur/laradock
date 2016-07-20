@@ -21,8 +21,7 @@ services:
     application:
         build: ./application
         volumes:
-            - /home/aaflalo/dev/quickstart/:/var/www/laravel
-#            - /home/aaflalo/dev/projects/:/var/www/laravel
+            - /home/cumulus/:/var/www/laravel
 
 ### Databases Data Container ################################
 
