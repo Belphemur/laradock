@@ -83,7 +83,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir -p /var/www/ && useradd -ms /bin/zsh $USER_NAME -u $USER_ID && \
 	git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER_NAME/.oh-my-zsh && \
-	chown -R $USER_NAME: -R /home/$USER_NAME &&
+	chown -R $USER_NAME: -R /home/$USER_NAME && \
         chown -R $USER_NAME: -R /var/www/laravel
 
 ADD zshrc /home/laravel/.zshrc
