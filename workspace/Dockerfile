@@ -1,8 +1,5 @@
 FROM  ubuntu:latest
 
-ENV USER_ID 1000
-ENV USER_NAME laravel
-
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
 RUN DEBIAN_FRONTEND=noninteractive
@@ -75,8 +72,15 @@ RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/ \
     && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
+# Install optional software
+ARG INSTALL_PRESTISSIMO=false
+RUN if [ "$INSTALL_PRESTISSIMO" = true ] ; then \
+        composer global require "hirak/prestissimo:^0.3"; \
+fi
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 RUN mkdir -p /var/www/ && useradd -ms /bin/zsh $USER_NAME -u $USER_ID && \
 	git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER_NAME/.oh-my-zsh && \
 	chown -R $USER_NAME: -R /home/$USER_NAME
@@ -85,8 +89,4 @@ ADD zshrc /home/laravel/.zshrc
 
 WORKDIR /var/www/laravel
 
-# Install optional software
-ARG INSTALL_PRESTISSIMO=false
-RUN if [ "$INSTALL_PRESTISSIMO" = true ] ; then \
-        composer global require "hirak/prestissimo:^0.3"; \
-    fi
+

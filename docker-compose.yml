@@ -138,10 +138,10 @@ services:
             context: ./workspace
             args:
                 - INSTALL_PRESTISSIMO=false
+                - USER_ID=1000
+                - USER_NAME=laravel
         volumes_from:
             - volumes_source
-        environment:
-            USER_ID: 1000
         tty: true
         user: laravel
 
