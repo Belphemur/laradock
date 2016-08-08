@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libssl-dev \
     libmcrypt-dev \
+    libxml2-dev \
     --no-install-recommends \
     && rm -r /var/lib/apt/lists/*
 
@@ -38,7 +39,8 @@ RUN pecl install xdebug && \
 RUN docker-php-ext-install \
     pdo_mysql \
     pdo_pgsql \
-    gd
+    gd \
+    soap
 
 # Install Memcached for php 7
 RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
