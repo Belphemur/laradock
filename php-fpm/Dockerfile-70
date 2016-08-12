@@ -1,5 +1,5 @@
 FROM php:7.0-fpm
-
+ARG USER_ID=1000
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
 ADD ./laravel.ini /usr/local/etc/php/conf.d
@@ -39,8 +39,7 @@ RUN pecl install xdebug && \
 RUN docker-php-ext-install \
     pdo_mysql \
     pdo_pgsql \
-    gd \
-    soap
+    gd
 
 # Install Memcached for php 7
 RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
@@ -59,7 +58,13 @@ RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-m
 
 RUN apt-get update && apt-get install gettext -y && docker-php-ext-install -j$(nproc) gettext
 
-RUN usermod -u 1000 www-data
+RUN apt-get update && apt-get install libicu-dev -y && docker-php-ext-install -j$(nproc) intl
+
+RUN usermod -u $USER_ID www-data
+
+RUN apt-get clean
+
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /var/www/laravel
 

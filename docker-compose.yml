@@ -5,7 +5,10 @@ services:
 ### Nginx Server Container ##################################
 
     nginx:
-        build: ./nginx
+        build: 
+            context: ./nginx
+            args:
+                - USER_ID=${EUID}
         volumes_from:
             - volumes_source
         volumes:
@@ -22,6 +25,8 @@ services:
         build:
             context: ./php-fpm
             dockerfile: Dockerfile-70
+            args:
+                - USER_ID=${EUID}
         volumes_from:
             - volumes_source
         expose:
@@ -138,7 +143,7 @@ services:
             context: ./workspace
             args:
                 - INSTALL_PRESTISSIMO=false
-                - USER_ID=1000
+                - USER_ID=${EUID}
                 - USER_NAME=laravel
         volumes_from:
             - volumes_source
