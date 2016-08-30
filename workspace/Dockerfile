@@ -79,6 +79,9 @@ RUN if [ "$INSTALL_PRESTISSIMO" = true ] ; then \
         composer global require "hirak/prestissimo:^0.3"; \
 fi
 
+# To debug memecached
+RUN apt-get install telnet
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -89,13 +92,16 @@ RUN mkdir -p /var/www/$USER_NAME && useradd -ms /bin/zsh $USER_NAME -u $USER_ID 
 	git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER_NAME/.oh-my-zsh && \
 	chown -R $USER_NAME: -R /home/$USER_NAME && \
         chown -R $USER_NAME: -R /var/www/$USER_NAME
+	
 
 ADD zshrc /home/laravel/.zshrc
 
 ADD xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
 
-ENV PHP_IDE_CONFIG="serverName=commandline"
-ENV XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"
+ENV _PHP_IDE_CONFIG="serverName=commandline"
+ENV _XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"
+
+RUN mkdir -p /var/run/laravel && chown -R $USER_NAME: -R /var/run/laravel
 
 WORKDIR /var/www/laravel
 
