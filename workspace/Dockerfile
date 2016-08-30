@@ -92,6 +92,11 @@ RUN mkdir -p /var/www/$USER_NAME && useradd -ms /bin/zsh $USER_NAME -u $USER_ID 
 
 ADD zshrc /home/laravel/.zshrc
 
+ADD xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
+
+ENV PHP_IDE_CONFIG="serverName=commandline"
+ENV XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"
+
 WORKDIR /var/www/laravel
 
 
