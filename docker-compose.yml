@@ -33,6 +33,7 @@ services:
             - "9000"
         links:
             - workspace
+            - bind
 
 ### MySQL Container #########################################
 
@@ -149,6 +150,8 @@ services:
             - volumes_source
         tty: true
         user: laravel
+        links:
+          - bind
 
 ### Laravel Application Code Container ######################
 
@@ -204,3 +207,15 @@ services:
             - redis:redis
           ports:
             - "8081:8081"
+    
+    bind:
+          image: sameersbn/bind:latest
+          ports:
+            - "9088:10000"
+          expose:
+            - "53"
+          environment:
+            - ROOT_PASSWORD=abc123
+          volumes:
+            - /data/bind:/data
+          restart: always
