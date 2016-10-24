@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libxml2-dev \
     libicu-dev \
+    libgmp-dev \
     gettext \
     locales-all \
     git \
@@ -38,13 +39,18 @@ RUN docker-php-ext-configure gd \
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
+# Link file for GMP
+
+RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h 
+
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install  -j$(nproc) \
     pdo_mysql \
     pdo_pgsql \
     gd \
     gettext \
-    intl
+    intl \
+    gmp
 
 # Install Memcached for php 7
 
