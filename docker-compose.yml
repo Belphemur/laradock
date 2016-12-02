@@ -24,7 +24,7 @@ services:
     php-fpm:
         build:
             context: ./php-fpm
-            dockerfile: Dockerfile-70
+            dockerfile: Dockerfile-71
             args:
                 - USER_ID=${EUID}
         volumes_from:
