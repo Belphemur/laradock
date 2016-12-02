@@ -2,10 +2,6 @@ FROM php:7.1-fpm
 ARG USER_ID=1000
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
-ADD ./laravel.ini /usr/local/etc/php/conf.d
-ADD ./xdebug.ini /usr/local/etc/php/conf.d
-ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
-
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libmemcached-dev \
@@ -24,7 +20,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends
 
 # install mcrypt library
-RUN docker-php-ext-install mcrypt
+# RUN docker-php-ext-install mcrypt
 
 # Install mongodb driver
 RUN pecl install mongodb
@@ -71,6 +67,10 @@ RUN usermod -u $USER_ID www-data
 RUN apt-get purge git -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /var/www/laravel
+
+ADD ./laravel.ini /usr/local/etc/php/conf.d
+ADD ./xdebug.ini /usr/local/etc/php/conf.d
+ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
 
 CMD ["php-fpm"]
 
