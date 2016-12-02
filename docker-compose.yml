@@ -52,7 +52,7 @@ services:
 ### PostgreSQL Container ####################################
 
     postgres:
-        image: postgres:latest
+        image: postgres:9.5
         volumes_from:
             - volumes_data
         ports:
