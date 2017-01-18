@@ -46,7 +46,11 @@ RUN docker-php-ext-install  -j$(nproc) \
     gd \
     gettext \
     intl \
-    gmp 
+    gmp
+
+# Add APCU
+RUN pecl install -f apcu && \
+    docker-php-ext-enable apcu
 
 # Install Memcached for php 7
 
