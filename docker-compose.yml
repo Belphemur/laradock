@@ -24,7 +24,7 @@ services:
     php-fpm:
         build:
             context: ./php-fpm
-            dockerfile: Dockerfile-70
+            dockerfile: Dockerfile-71
             args:
                 - USER_ID=${EUID}
         volumes_from:
@@ -49,10 +49,18 @@ services:
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
 
+## Upgrade postgres : https://github.com/tianon/docker-postgres-upgrade
+# docker run --rm \
+#    -v /data/postgresql:/var/lib/postgresql/9.5/data \
+#    -v /data/pgdata/9.6:/var/lib/postgresql/9.6/data \
+#    tianon/postgres-upgrade:9.5-to-9.6
+#
+# as root: echo "host all all 0.0.0.0/0 md5" > /data/pgdata/9.6/pg_hba.conf
+
 ### PostgreSQL Container ####################################
 
     postgres:
-        image: postgres:9.5
+        image: postgres:9.6
         volumes_from:
             - volumes_data
         ports:
@@ -166,7 +174,7 @@ services:
         build: ./volumes/data
         volumes:
             - /data/mysql:/var/lib/mysql
-            - /data/postgresql:/var/lib/pgdata
+            - /data/pgdata/9.6:/var/lib/pgdata
             - /data/mariadb:/var/lib/mariadb
             - /data/memcached:/var/lib/memcached
             - /data/redis:/data
@@ -191,7 +199,7 @@ services:
 
 ### Add more Containers below ###############################
     mailcatcher:
-        image: belphemur/mailcatcher-exim-courrier
+        image: belphemur/mailcatcher-exim-courrier:2.1
         environment:
             - MAILCATCHER_USERNAME=admin
             - MAILCATCHER_PASSWORD=abc123

@@ -23,30 +23,31 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
 # Install PHP-CLI 7, some PHP extentions and some useful Tools with APT
 RUN apt-get update && apt-get install -y --force-yes \
-        php7.0-cli \
-        php7.0-common \
-        php7.0-curl \
-        php7.0-json \
-        php7.0-xml \
-        php7.0-mbstring \
-        php7.0-mcrypt \
-        php7.0-mysql \
-        php7.0-pgsql \
-        php7.0-sqlite \
-        php7.0-sqlite3 \
-        php7.0-zip \
-        php7.0-memcached \
-        php7.0-gd \
-        php7.0-xdebug \
-        php7.0-intl \
-	php7.0-gmp \
+        php7.1-cli \
+        php7.1-common \
+        php7.1-curl \
+        php7.1-json \
+        php7.1-xml \
+        php7.1-mbstring \
+        php7.1-mcrypt \
+        php7.1-mysql \
+        php7.1-pgsql \
+        php7.1-sqlite \
+        php7.1-sqlite3 \
+        php7.1-zip \
+        php7.1-memcached \
+        php7.1-gd \
+        php7.1-xdebug \
+        php7.1-intl \
+	php7.1-gmp \
+	php-apcu \
         php-dev \
         libcurl4-openssl-dev \
         libedit-dev \
         libssl-dev \
         libxml2-dev \
         xz-utils \
-        php7.0-gettext \
+        php7.1-gettext \
         sqlite3 \
         libsqlite3-dev \
         git \
