@@ -199,7 +199,7 @@ services:
 
 ### Add more Containers below ###############################
     mailcatcher:
-        image: belphemur/mailcatcher-exim-courrier
+        image: belphemur/mailcatcher-exim-courrier:2.1
         environment:
             - MAILCATCHER_USERNAME=admin
             - MAILCATCHER_PASSWORD=abc123
