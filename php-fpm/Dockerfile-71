@@ -66,6 +66,8 @@ RUN git clone --branch php7 https://github.com/php-memcached-dev/php-memcached /
     && rm -r memcached \
     && docker-php-ext-enable memcached
 
+RUN docker-php-ext-install shmop
+
 RUN usermod -u $USER_ID www-data
 
 RUN apt-get purge git -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
