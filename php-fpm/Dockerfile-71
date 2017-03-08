@@ -20,16 +20,8 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends
 
 # install mcrypt library
-# RUN docker-php-ext-install mcrypt
+RUN docker-php-ext-install mcrypt
 
-# Install mongodb driver
-RUN pecl install mongodb
-
-# configure gd library
-RUN docker-php-ext-configure gd \
-    --enable-gd-native-ttf \
-    --with-jpeg-dir=/usr/lib \
-    --with-freetype-dir=/usr/include/freetype2
 
 # Install xdebug
 RUN pecl install xdebug && \
@@ -41,9 +33,7 @@ RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
 
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install  -j$(nproc) \
-    pdo_mysql \
     pdo_pgsql \
-    gd \
     gettext \
     intl \
     gmp
@@ -54,7 +44,7 @@ RUN pecl install -f apcu && \
 
 # Install Memcached for php 7
 
-RUN git clone --branch php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
+RUN git clone --branch v3.0.3 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
   && cd /usr/src/php/ext/ \
   && ( \
         cd memcached \
@@ -64,13 +54,15 @@ RUN git clone --branch php7 https://github.com/php-memcached-dev/php-memcached /
         && make install \
     ) \
     && rm -r memcached \
-    && docker-php-ext-enable memcached
+    && docker-php-ext-enable memcached \
+    && apt-get purge git -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm /usr/local/etc/php-fpm.d/www.conf
 
 RUN docker-php-ext-install shmop
 
 RUN usermod -u $USER_ID www-data
-
-RUN apt-get purge git -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /var/www/laravel
 
