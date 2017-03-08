@@ -32,7 +32,7 @@ services:
         volumes_from:
             - volumes_source
         expose:
-            - "9000"
+            - "9000"  
         links:
             - workspace
             - bind
@@ -62,7 +62,7 @@ services:
 ### PostgreSQL Container ####################################
 
     postgres:
-        image: postgres:9.6
+        image: postgres:9.6-alpine
         volumes_from:
             - volumes_data
         ports:

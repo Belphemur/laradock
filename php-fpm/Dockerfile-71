@@ -57,7 +57,7 @@ RUN git clone --branch v3.0.3 https://github.com/php-memcached-dev/php-memcached
     && docker-php-ext-enable memcached \
     && apt-get purge git -y \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && rm /usr/local/etc/php-fpm.d/www.conf
 
 RUN docker-php-ext-install shmop
