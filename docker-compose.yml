@@ -22,6 +22,8 @@ services:
 ### PHP-FPM Container #######################################
 
     php-fpm:
+        security_opt:
+            - seccomp:unconfined
         build:
             context: ./php-fpm
             dockerfile: Dockerfile-71
