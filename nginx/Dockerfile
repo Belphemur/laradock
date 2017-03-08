@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:1.11-alpine
 ARG USER_ID=1000
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
@@ -8,7 +8,9 @@ ADD laravel.conf /etc/nginx/sites-available/
 
 RUN echo "upstream php-upstream { server php-fpm:9000; }" > /etc/nginx/conf.d/upstream.conf
 
-RUN usermod -u $USER_ID www-data
+RUN set -x ; \
+  addgroup -g 82 -S www-data ; \
+  adduser -u $USER_ID -D -S -G www-data www-data && exit 0 ; exit 1
 
 CMD ["nginx"]
 
