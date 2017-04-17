@@ -1,76 +1,18 @@
-FROM php:7.1-fpm
+FROM cytopia/php-fpm-7.1
 ARG USER_ID=1000
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    libmemcached-dev \
-    curl \
-    libjpeg-dev \
-    libpng12-dev \
-    libfreetype6-dev \
-    libssl-dev \
-    libmcrypt-dev \
-    libxml2-dev \
-    libicu-dev \
-    gettext \
-    locales-all \
-    git \
-    libgmp-dev \
-    --no-install-recommends
+RUN yum install php-memcached -y
 
-# install mcrypt library
-RUN docker-php-ext-install mcrypt
-
-
-# Install xdebug
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug
-
-# Link file for GMP
-
-RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h 
-
-# Install extensions using the helper script provided by the base image
-RUN docker-php-ext-install  -j$(nproc) \
-    pdo_pgsql \
-    gettext \
-    intl \
-    gmp
-
-# Add APCU
-RUN pecl install -f apcu && \
-    docker-php-ext-enable apcu
-
-# Install Memcached for php 7
-
-RUN git clone --branch v3.0.3 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-  && cd /usr/src/php/ext/ \
-  && ( \
-        cd memcached \
-        && phpize \
-        && ./configure \
-        && make -j$(nproc) \
-        && make install \
-    ) \
-    && rm -r memcached \
-    && docker-php-ext-enable memcached \
-    && apt-get purge git -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && rm /usr/local/etc/php-fpm.d/www.conf
-
-RUN docker-php-ext-install shmop
-
-RUN usermod -u $USER_ID www-data
+RUN usermod -u $USER_ID apache
 
 WORKDIR /var/www/laravel
 
-ADD ./laravel.ini /usr/local/etc/php/conf.d
-ADD ./xdebug.ini /usr/local/etc/php/conf.d
-ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
+ADD ./laravel.ini /etc/php-custom.d
+ADD ./xdebug.ini /etc/php-custom.d
+# ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
 
-CMD ["php-fpm"]
+# CMD ["php-fpm"]
 
 EXPOSE 9000
