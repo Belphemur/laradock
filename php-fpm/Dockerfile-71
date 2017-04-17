@@ -1,6 +1,7 @@
 FROM php:7.1-fpm
 ARG USER_ID=1000
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \

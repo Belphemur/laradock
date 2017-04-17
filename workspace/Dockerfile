@@ -3,8 +3,6 @@ FROM  ubuntu:latest
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
 RUN DEBIAN_FRONTEND=noninteractive
-RUN locale-gen en_US.UTF-8
-RUN locale-gen fr_CA.UTF-8
 
 ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
@@ -14,7 +12,7 @@ ENV TERM xterm
 
 # Install "software-properties-common" (for the "add-apt-repository")
 RUN apt-get update && apt-get install -y \
-    software-properties-common sudo curl
+    software-properties-common sudo curl locales-all
 
 # Add the "PHP 7" ppa
 RUN add-apt-repository -y \
