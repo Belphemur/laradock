@@ -1,11 +1,9 @@
 FROM cytopia/php-fpm-7.1
-ARG USER_ID=1000
+ARG NEW_UID=1000
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN yum install php-memcached php-redis php-ldap -y
-
-RUN usermod -u $USER_ID apache
 
 WORKDIR /var/www/laravel
 

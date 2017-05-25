@@ -29,6 +29,9 @@ services:
             dockerfile: Dockerfile-71
             args:
                 - USER_ID=${EUID}
+        environment:
+            TIMEZONE: America/Montreal
+            NEW_UID: ${EUID}
         volumes_from:
             - volumes_source
         expose:

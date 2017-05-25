@@ -1,4 +1,4 @@
-FROM nginx:1.13-alpine
+FROM nginx:alpine
 ARG USER_ID=1000
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
