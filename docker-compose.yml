@@ -39,6 +39,7 @@ services:
         links:
             - workspace
             - bind
+            - ldap
 
 ### MySQL Container #########################################
 
@@ -232,3 +233,18 @@ services:
           volumes:
             - /data/bind:/data
           restart: always
+    ldap:
+          image: osixia/openldap
+          environment:
+              LDAP_ADMIN_PASSWORD: abc123
+          expose:
+            - "389"
+
+    ldap-admin:
+          image: osixia/phpldapadmin
+          environment:
+              PHPLDAPADMIN_LDAP_HOSTS: "ldap-host"
+          links:
+            - "ldap:ldap-host"
+          ports:
+            - "4443:443"
