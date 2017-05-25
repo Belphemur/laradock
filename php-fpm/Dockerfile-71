@@ -3,7 +3,7 @@ ARG USER_ID=1000
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN yum install php-memcached -y
+RUN yum install php-memcached php-redis php-ldap -y
 
 RUN usermod -u $USER_ID apache
 
