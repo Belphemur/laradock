@@ -36,6 +36,9 @@ services:
             NEW_UID: ${EUID}
         volumes_from:
             - volumes_source
+        volumes:
+            - ./php-fpm/php.d/:/etc/php-custom.d
+            - ./logs/php:/var/log/php
         expose:
             - "9000"  
         links:
