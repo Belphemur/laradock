@@ -243,7 +243,7 @@ services:
           environment:
               LDAP_ADMIN_PASSWORD: abc123
           ports:
-            - "localhost:389:389"
+            - "389:389"
           expose:
             - "389"
 
