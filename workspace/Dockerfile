@@ -18,29 +18,28 @@ RUN apt-get update && apt-get install -y \
 RUN add-apt-repository -y \
     ppa:ondrej/php
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
 
 # Install PHP-CLI 7, some PHP extentions and some useful Tools with APT
 RUN apt-get update && apt-get install -y --force-yes \
-        php7.1-cli \
-        php7.1-common \
-        php7.1-curl \
-        php7.1-json \
-        php7.1-xml \
-        php7.1-mbstring \
-        php7.1-mcrypt \
-        php7.1-mysql \
-        php7.1-pgsql \
-        php7.1-sqlite \
-        php7.1-sqlite3 \
-        php7.1-zip \
-        php7.1-memcached \
-        php7.1-gd \
-        php7.1-xdebug \
-        php7.1-intl \
-	php7.1-gmp \
-        php7.1-ldap \ 
-        php7.1-redis \ 
+        php7.2-cli \
+        php7.2-common \
+        php7.2-curl \
+        php7.2-json \
+        php7.2-xml \
+        php7.2-mbstring \
+        php7.2-mysql \
+        php7.2-pgsql \
+        php7.2-sqlite \
+        php7.2-sqlite3 \
+        php7.2-zip \
+        php7.2-memcached \
+        php7.2-gd \
+        php7.2-xdebug \
+        php7.2-intl \
+	php7.2-gmp \
+        php7.2-ldap \ 
+        php7.2-redis \ 
 	php-apcu \
         php-dev \
         libcurl4-openssl-dev \
@@ -48,7 +47,7 @@ RUN apt-get update && apt-get install -y --force-yes \
         libssl-dev \
         libxml2-dev \
         xz-utils \
-        php7.1-gettext \
+        php7.2-gettext \
         sqlite3 \
         libsqlite3-dev \
         git \
@@ -100,7 +99,7 @@ RUN mkdir -p /var/www/$USER_NAME && useradd -ms /bin/zsh $USER_NAME -u $USER_ID 
 
 ADD zshrc /home/laravel/.zshrc
 
-ADD xdebug.ini /etc/php/7.1/mods-available/xdebug.ini
+ADD xdebug.ini /etc/php/7.2/mods-available/xdebug.ini
 
 ENV _PHP_IDE_CONFIG="serverName=commandline"
 ENV _XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"

@@ -28,7 +28,7 @@ services:
             - seccomp:unconfined
         build:
             context: ./php-fpm
-            dockerfile: Dockerfile-71
+            dockerfile: 7.2.dockerfile
             args:
                 - USER_ID=${EUID}
         environment:
