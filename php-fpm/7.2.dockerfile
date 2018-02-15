@@ -1,6 +1,23 @@
 FROM php:7.2-fpm-alpine3.7
 ARG USER_ID=1000
-ENV DEBIAN_FRONTEND noninteractive
+ARG LOCALE_VERSION=2.27-r0
+
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
+
+# Glibc and Locales
+RUN apk --no-cache add ca-certificates wget libgcc && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-${LOCALE_VERSION}.apk && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-dev-${LOCALE_VERSION}.apk && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-bin-${LOCALE_VERSION}.apk && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-i18n-${LOCALE_VERSION}.apk && \
+    apk add glibc-bin-${LOCALE_VERSION}.apk glibc-${LOCALE_VERSION}.apk glibc-i18n-${LOCALE_VERSION}.apk glibc-dev-${LOCALE_VERSION}.apk && \
+    rm glibc*.apk
+
+COPY ./locales/locales.txt /tmp/locales.txt
+RUN cat /tmp/locales.txt | xargs -i /usr/glibc-compat/bin/localedef -i {} -f UTF-8 {}.UTF-8 \
+    && rm /tmp/locales.txt
 
 # intl, zip, soap
 RUN apk add --update --no-cache libintl icu icu-dev libxml2-dev \
@@ -106,9 +123,9 @@ RUN { \
         echo 'apc.stat=1'; \
 } > /usr/local/etc/php/conf.d/apcu-recommended.ini
 
-ADD php.d/laravel.ini /usr/local/etc/php/conf.d
-ADD php.d/xdebug.ini /usr/local/etc/php/conf.d
 ADD ./laravel.pool.conf /usr/local/etc/php-fpm.d/
+ADD ./php.d/laravel.ini /usr/local/etc/php/conf.d
+ADD ./php.d/xdebug.ini /usr/local/etc/php/conf.d
 
 RUN apk --no-cache add shadow \
     && usermod -u $USER_ID www-data \
