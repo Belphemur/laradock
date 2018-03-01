@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y --force-yes \
         php7.2-redis \ 
 	php-apcu \
         php-dev \
+        php-igbinary \
         libcurl4-openssl-dev \
         libedit-dev \
         libssl-dev \
@@ -100,6 +101,8 @@ RUN mkdir -p /var/www/$USER_NAME && useradd -ms /bin/zsh $USER_NAME -u $USER_ID 
 ADD zshrc /home/laravel/.zshrc
 
 ADD xdebug.ini /etc/php/7.2/mods-available/xdebug.ini
+ADD 100-provulus.ini /etc/php/7.2/cli/conf.d/xdebug.ini
+
 
 ENV _PHP_IDE_CONFIG="serverName=commandline"
 ENV _XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"
