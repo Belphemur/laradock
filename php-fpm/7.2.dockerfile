@@ -19,10 +19,10 @@ COPY ./locales/locales.txt /tmp/locales.txt
 RUN cat /tmp/locales.txt | xargs -i /usr/glibc-compat/bin/localedef -i {} -f UTF-8 {}.UTF-8 \
     && rm /tmp/locales.txt
 
-# intl, zip, soap
-RUN apk add --update --no-cache libintl icu icu-dev libxml2-dev \
-    && docker-php-ext-install intl zip soap \
-    && apk del icu-dev libxml2-dev
+# intl, zip, soap, ldap
+RUN apk add --update --no-cache libintl icu icu-dev libxml2-dev openldap-dev libldap \
+    && docker-php-ext-install intl zip soap ldap \
+    && apk del icu-dev libxml2-dev openldap-dev
 
 # mysqli, pdo, pdo_mysql, pdo_pgsql
 RUN apk add --update --no-cache postgresql-dev postgresql \
