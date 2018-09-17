@@ -62,16 +62,17 @@ services:
 
 ## Upgrade postgres : https://github.com/tianon/docker-postgres-upgrade
 # docker run --rm \
-#    -v /data/postgresql:/var/lib/postgresql/9.5/data \
-#    -v /data/pgdata/9.6:/var/lib/postgresql/9.6/data \
-#    tianon/postgres-upgrade:9.5-to-9.6
-#
+#    -v /media/aaflalo/mendelev-root/home/aaflalo/quar-db:/var/lib/postgresql/ \
+#    tianon/postgres-upgrade:9.6-to-10 --link
+# 
+# Change the right to the data dir to user 70
+# chown 70:70 -R /media/aaflalo/mendelev-root/home/aaflalo/quar-db
 # as root: echo "host all all 0.0.0.0/0 md5" > /data/pgdata/9.6/pg_hba.conf
 
 ### PostgreSQL Container ####################################
 
     postgres:
-        image: postgres:9.6-alpine
+        image: postgres:10-alpine
         volumes_from:
             - volumes_data
         ports:
@@ -80,8 +81,19 @@ services:
             POSTGRES_DB: homestead
             POSTGRES_USER: homestead
             POSTGRES_PASSWORD: secret
-            PGDATA: /var/lib/pgdata
+            PGDATA: /var/lib/postgresql/10/data
 
+
+
+    postgres-test:
+        image: circleci/postgres:10-alpine-ram
+        ports:
+            - "54322:5432"
+        environment:
+            POSTGRES_DB: homestead
+            POSTGRES_USER: homestead
+            POSTGRES_PASSWORD: secret
+                        
 ### MariaDB Container #######################################
 
     mariadb:
@@ -185,7 +197,9 @@ services:
         build: ./volumes/data
         volumes:
             - /data/mysql:/var/lib/mysql
-            - /data/pgdata/9.6:/var/lib/pgdata
+            - /media/aaflalo/mendelev-root/home/aaflalo/quar-db:/var/lib/postgresql
+           #- /media/aaflalo/mendelev-root/home/aaflalo/quar-db:/var/lib/pgdata
+           #- /data/pgdata/9.6:/var/lib/pgdata
             - /data/mariadb:/var/lib/mariadb
             - /data/memcached:/var/lib/memcached
             - /data/redis:/data
