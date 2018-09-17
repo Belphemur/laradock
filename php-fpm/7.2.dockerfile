@@ -1,13 +1,13 @@
 FROM php:7.2-fpm-alpine3.7
 ARG USER_ID=1000
-ARG LOCALE_VERSION=2.27-r0
+ARG LOCALE_VERSION=2.28-r0
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
 # Glibc and Locales
 RUN apk --no-cache add ca-certificates wget libgcc && \
-    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-${LOCALE_VERSION}.apk && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-dev-${LOCALE_VERSION}.apk && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LOCALE_VERSION}/glibc-bin-${LOCALE_VERSION}.apk && \
