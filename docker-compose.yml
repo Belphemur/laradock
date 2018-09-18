@@ -197,7 +197,7 @@ services:
         build: ./volumes/data
         volumes:
             - /data/mysql:/var/lib/mysql
-            - /media/aaflalo/mendelev-root/home/aaflalo/quar-db:/var/lib/postgresql
+            - /media/aaflalo/mendelev-root/home/aaflalo/postgresql-db:/var/lib/postgresql
            #- /media/aaflalo/mendelev-root/home/aaflalo/quar-db:/var/lib/pgdata
            #- /data/pgdata/9.6:/var/lib/pgdata
             - /data/mariadb:/var/lib/mariadb

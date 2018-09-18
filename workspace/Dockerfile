@@ -110,6 +110,7 @@ ENV _PHP_IDE_CONFIG="serverName=commandline"
 ENV _XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"
 
 RUN mkdir -p /var/run/laravel && chown -R $USER_NAME: -R /var/run/laravel
+RUN composer global require hirak/prestissimo
 
 WORKDIR /var/www/laravel
 
