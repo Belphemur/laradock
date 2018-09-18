@@ -58,10 +58,10 @@ RUN apt-get update && apt-get install -y --force-yes \
         vim \
         nodejs \
         zsh \
-	dnsutils
-
-# Clean up, to free some space
-RUN apt-get clean
+	dnsutils \
+        unzip \
+        telnet \
+&& apt-get clean
 
 # Install gulp and bower with NPM
 RUN npm install -g \
@@ -85,11 +85,6 @@ RUN if [ "$INSTALL_PRESTISSIMO" = true ] ; then \
         composer global require "hirak/prestissimo:^0.3"; \
 fi
 
-# To debug memecached
-RUN apt-get install telnet
-
-# Clean up
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ARG USER_NAME=laravel
 ARG USER_ID=1000
@@ -110,7 +105,7 @@ ENV _PHP_IDE_CONFIG="serverName=commandline"
 ENV _XDEBUG_CONFIG="idekey=PHPSTORM remote_host=172.17.0.1"
 
 RUN mkdir -p /var/run/laravel && chown -R $USER_NAME: -R /var/run/laravel
-RUN composer global require hirak/prestissimo
+RUN runuser -l $USER_NAME -c 'composer global require hirak/prestissimo'
 
 WORKDIR /var/www/laravel
 
